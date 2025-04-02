@@ -29,7 +29,6 @@ public class Protect extends HttpServlet {
      */
     public Protect() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -38,26 +37,14 @@ public class Protect extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/device_insurance", "root", "Humber");	
-			
-			String productsSql = "INSERT INTO products (serial_no, purchase_date, product_type_id) VALUES (?, ?, ?)";
-			PreparedStatement productsStmt = connection.prepareStatement(productsSql, Statement.RETURN_GENERATED_KEYS);
-			productsStmt.setString(1, request.getParameter("serialno"));
-			productsStmt.setString(2, request.getParameter("purchasedate"));
-			productsStmt.setInt(3, Integer.parseInt(request.getParameter("devicename")));
-			productsStmt.executeUpdate();
-			
-			ResultSet productIds = productsStmt.getGeneratedKeys();
-			int productId = -1;
-			if (productIds.next()) {
-				productId = productIds.getInt(1);
-			} else {
-				throw new SQLException("Failed to fetch product ID");
-			}
+			String url = System.getenv("DB_URL");
+			String username = System.getenv("DB_USER");
+			String password = System.getenv("DB_PASSWORD");
+			Connection connection = DriverManager.getConnection(url, username, password);	
 			
 			LocalDate now = LocalDate.now();
 			LocalDate end = now.plusYears(5);
-
+			
 			// There is a database trigger configured to inject the default plan's default premium. There is no need to query it here.
 			String plansSql = "INSERT INTO protection_plans (start_date, expiry_date, protection_plan_type_id) VALUES (?, ?, ?)";
 			PreparedStatement plansStmt = connection.prepareStatement(plansSql, Statement.RETURN_GENERATED_KEYS);
@@ -74,13 +61,14 @@ public class Protect extends HttpServlet {
 				throw new SQLException("Failed to fetch plan ID");
 			}
 			
-			// Link the results
-			String assignmentSql = "INSERT INTO protection_plan_products VALUES (?, ?)";
-			PreparedStatement assignmentStmt = connection.prepareStatement(assignmentSql);
-			assignmentStmt.setInt(1, productId);
-			assignmentStmt.setInt(2, planId);
-			assignmentStmt.executeUpdate();
-
+			String productsSql = "INSERT INTO products (serial_no, purchase_date, product_type_id, protection_plan_id) VALUES (?, ?, ?, ?)";
+			PreparedStatement productsStmt = connection.prepareStatement(productsSql, Statement.RETURN_GENERATED_KEYS);
+			productsStmt.setString(1, request.getParameter("serialno"));
+			productsStmt.setString(2, request.getParameter("purchasedate"));
+			productsStmt.setInt(3, Integer.parseInt(request.getParameter("devicename")));
+			productsStmt.setInt(4, planId);
+			productsStmt.executeUpdate();
+			
 			response.sendRedirect("protect.jsp");
 		} catch (ClassNotFoundException | SQLException e) {
 			// Forward the error

@@ -20,7 +20,7 @@
 			driver="com.mysql.cj.jdbc.Driver"
 			url="jdbc:mysql://localhost:3306/device_insurance"
 			user="root"
-			password="Humber"
+			password="root"
 			var="db"
 		/>
 	

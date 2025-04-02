@@ -30,7 +30,10 @@ CREATE TABLE `claims` (
   `status` varchar(45) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   `settlement` int DEFAULT NULL,
-  PRIMARY KEY (`claim_id`)
+  `product_id` int DEFAULT NULL,
+  PRIMARY KEY (`claim_id`),
+  KEY `claims_product_id_fk_idx` (`product_id`),
+  CONSTRAINT `claims_product_id_fk` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -41,32 +44,6 @@ CREATE TABLE `claims` (
 LOCK TABLES `claims` WRITE;
 /*!40000 ALTER TABLE `claims` DISABLE KEYS */;
 /*!40000 ALTER TABLE `claims` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `product_claims`
---
-
-DROP TABLE IF EXISTS `product_claims`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `product_claims` (
-  `product_id` int DEFAULT NULL,
-  `claim_id` int DEFAULT NULL,
-  KEY `claims_claim_id_idx` (`claim_id`),
-  KEY `claims_product_id_idx` (`product_id`),
-  CONSTRAINT `claims_claim_id` FOREIGN KEY (`claim_id`) REFERENCES `claims` (`claim_id`),
-  CONSTRAINT `claims_product_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `product_claims`
---
-
-LOCK TABLES `product_claims` WRITE;
-/*!40000 ALTER TABLE `product_claims` DISABLE KEYS */;
-/*!40000 ALTER TABLE `product_claims` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -107,10 +84,13 @@ CREATE TABLE `products` (
   `serial_no` varchar(45) DEFAULT NULL,
   `purchase_date` date DEFAULT NULL,
   `product_type_id` int DEFAULT NULL,
+  `protection_plan_id` int DEFAULT NULL,
   PRIMARY KEY (`product_id`),
   KEY `product_type_id_fk_idx` (`product_type_id`),
+  KEY `product_protection_plan_id_fk_idx` (`protection_plan_id`),
+  CONSTRAINT `product_protection_plan_id_fk` FOREIGN KEY (`protection_plan_id`) REFERENCES `protection_plans` (`protection_plan_id`),
   CONSTRAINT `product_type_id_fk` FOREIGN KEY (`product_type_id`) REFERENCES `product_types` (`product_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -119,34 +99,8 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'SN15975348620','2025-04-02',1),(2,'SN15975348620','2025-04-02',3),(3,'SN15975348620','2025-04-02',6);
+INSERT INTO `products` VALUES (1,'SN15975348620','2025-04-02',1,NULL),(2,'SN15975348620','2025-04-02',3,NULL),(3,'SN15975348620','2025-04-02',6,NULL),(4,'SN15975348620','2025-04-02',2,NULL),(5,'SN15975348620','2025-03-06',4,NULL),(6,'SN15975348620','2025-03-10',4,NULL),(7,'SN15975348620','2025-03-10',4,NULL),(8,'SN15975348620','2025-03-22',4,NULL),(9,'SN15975348620','2025-04-11',4,8),(10,'SN15975348620','2025-04-13',5,9);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `protection_plan_products`
---
-
-DROP TABLE IF EXISTS `protection_plan_products`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `protection_plan_products` (
-  `protection_plan_id` int DEFAULT NULL,
-  `product_id` int DEFAULT NULL,
-  KEY `protection_plan_id_fk_idx` (`protection_plan_id`),
-  KEY `product_id_idx` (`product_id`),
-  CONSTRAINT `products_product_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`),
-  CONSTRAINT `products_protection_plan_id_fk` FOREIGN KEY (`protection_plan_id`) REFERENCES `protection_plans` (`protection_plan_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `protection_plan_products`
---
-
-LOCK TABLES `protection_plan_products` WRITE;
-/*!40000 ALTER TABLE `protection_plan_products` DISABLE KEYS */;
-/*!40000 ALTER TABLE `protection_plan_products` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -191,7 +145,7 @@ CREATE TABLE `protection_plans` (
   PRIMARY KEY (`protection_plan_id`),
   KEY `protection_plan_types_id_fk_idx` (`protection_plan_type_id`),
   CONSTRAINT `protection_plan_types_id_fk` FOREIGN KEY (`protection_plan_type_id`) REFERENCES `protection_plan_types` (`protection_plan_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -200,7 +154,7 @@ CREATE TABLE `protection_plans` (
 
 LOCK TABLES `protection_plans` WRITE;
 /*!40000 ALTER TABLE `protection_plans` DISABLE KEYS */;
-INSERT INTO `protection_plans` VALUES (1,'2025-04-02','2030-04-02',750,2),(2,'2025-04-02','2030-04-02',750,2);
+INSERT INTO `protection_plans` VALUES (1,'2025-04-02','2030-04-02',750,2),(2,'2025-04-02','2030-04-02',750,2),(3,'2025-04-02','2030-04-02',1000,3),(4,'2025-04-02','2030-04-02',5000,9),(5,'2025-04-02','2030-04-02',900,6),(6,'2025-04-02','2030-04-02',900,6),(7,'2025-04-02','2030-04-02',1000,3),(8,'2025-04-02','2030-04-02',750,2),(9,'2025-04-02','2030-04-02',500,4);
 /*!40000 ALTER TABLE `protection_plans` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -293,4 +247,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-02  2:17:33
+-- Dump completed on 2025-04-02 17:41:12
