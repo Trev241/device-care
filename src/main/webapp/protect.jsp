@@ -12,7 +12,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body>
-	<div class="max-w-screen-xl mx-auto my-24">
+	<div class="max-w-screen-lg mx-auto my-24">
 		<h1 class="text-4xl mb-1">Protect your device</h1>
 		<p class="text-lg mb-10">Leave the burden of fixing your broken home appliances to us!</p>	
 	

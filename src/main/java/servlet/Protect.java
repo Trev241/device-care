@@ -73,6 +73,7 @@ public class Protect extends HttpServlet {
 		} catch (ClassNotFoundException | SQLException e) {
 			// Forward the error
 			System.err.println(e);
+			response.sendError(400, e.toString());
 		}
 	}
 
