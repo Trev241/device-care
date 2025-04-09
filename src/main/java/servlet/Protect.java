@@ -46,11 +46,12 @@ public class Protect extends HttpServlet {
 			LocalDate end = now.plusYears(5);
 			
 			// There is a database trigger configured to inject the default plan's default premium. There is no need to query it here.
-			String plansSql = "INSERT INTO protection_plans (start_date, expiry_date, protection_plan_type_id) VALUES (?, ?, ?)";
+			String plansSql = "INSERT INTO protection_plans (start_date, expiry_date, protection_plan_type_id, user_id) VALUES (?, ?, ?, ?)";
 			PreparedStatement plansStmt = connection.prepareStatement(plansSql, Statement.RETURN_GENERATED_KEYS);
 			plansStmt.setString(1, now.toString());
 			plansStmt.setString(2, end.toString());
 			plansStmt.setString(3, request.getParameter("plantier"));
+			plansStmt.setInt(4, Integer.parseInt(request.getParameter("userid")));
 			plansStmt.executeUpdate();
 			
 			ResultSet planIds = plansStmt.getGeneratedKeys();
@@ -61,12 +62,13 @@ public class Protect extends HttpServlet {
 				throw new SQLException("Failed to fetch plan ID");
 			}
 			
-			String productsSql = "INSERT INTO products (serial_no, purchase_date, product_type_id, protection_plan_id) VALUES (?, ?, ?, ?)";
+			String productsSql = "INSERT INTO products (serial_no, purchase_date, product_type_id, protection_plan_id, user_id) VALUES (?, ?, ?, ?, ?)";
 			PreparedStatement productsStmt = connection.prepareStatement(productsSql, Statement.RETURN_GENERATED_KEYS);
 			productsStmt.setString(1, request.getParameter("serialno"));
 			productsStmt.setString(2, request.getParameter("purchasedate"));
 			productsStmt.setInt(3, Integer.parseInt(request.getParameter("devicename")));
 			productsStmt.setInt(4, planId);
+			productsStmt.setInt(5, Integer.parseInt(request.getParameter("userid")));
 			productsStmt.executeUpdate();
 			
 			response.sendRedirect("protect.jsp");
