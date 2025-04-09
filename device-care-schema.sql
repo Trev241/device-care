@@ -34,7 +34,7 @@ CREATE TABLE `claims` (
   PRIMARY KEY (`claim_id`),
   KEY `claims_product_id_fk_idx` (`product_id`),
   CONSTRAINT `claims_product_id_fk` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,36 @@ CREATE TABLE `claims` (
 
 LOCK TABLES `claims` WRITE;
 /*!40000 ALTER TABLE `claims` DISABLE KEYS */;
+INSERT INTO `claims` VALUES (1,'2025-04-02','PENDING','It is broken',NULL,10),(2,'2025-04-02','PENDING','It is broken',NULL,10),(3,'2025-04-02','PENDING','It is broken',NULL,10),(4,'2025-04-02','PENDING','It exploded.',NULL,9),(5,'2025-04-02','PENDING','It no work.',NULL,9),(6,'2025-04-02','PENDING','It no work.',NULL,9),(7,'2025-04-02','PENDING','It make many noise.',NULL,11),(8,'2025-04-02','PENDING','Please fix it man.',NULL,11),(9,'2025-04-02','PENDING','Submitting another claim...',NULL,11),(10,'2025-04-02','PENDING','It exploded',NULL,12),(11,'2025-04-09','PENDING','It break.',NULL,12),(12,'2025-04-09','PENDING','1\r\n',NULL,14),(13,'2025-04-09','PENDING','2',NULL,14),(14,'2025-04-09','PENDING','3',NULL,14),(15,'2025-04-09','PENDING','It broke.',NULL,15),(16,'2025-04-09','PENDING','Screen broke.',NULL,15),(17,'2025-04-09','PENDING','Dropped it.',NULL,15),(18,'2025-04-09','PENDING','It exploded.',NULL,12),(19,'2025-04-09','PENDING','It don\'t open.',NULL,16),(20,'2025-04-09','PENDING','It stuck',NULL,16),(21,'2025-04-09','PENDING','It exploded.',NULL,16),(22,'2025-04-09','PENDING','my dog ate ',NULL,17),(23,'2025-04-09','PENDING','my dog ate ',NULL,17);
 /*!40000 ALTER TABLE `claims` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `notifications`
+--
+
+DROP TABLE IF EXISTS `notifications`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `notifications` (
+  `notification_id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) DEFAULT NULL,
+  `message` varchar(500) DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
+  PRIMARY KEY (`notification_id`),
+  KEY `notifications_user_id_fk_idx` (`user_id`),
+  CONSTRAINT `notifications_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `notifications`
+--
+
+LOCK TABLES `notifications` WRITE;
+/*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
+INSERT INTO `notifications` VALUES (1,'Revised Premium','After looking into your recent history with us, we have decided to revise your monthly premium. This new premium rate will be effective immediately.',NULL),(2,'Revised Premium','After looking into your recent history with us, we have decided to revise your monthly premium. This new premium rate will be effective immediately.',NULL),(3,'Revised Premium','After looking into your recent history with us, we have decided to revise your monthly premium. This new premium rate will be effective immediately.',NULL),(4,'Revised Premium','After looking into your recent history with us, we have decided to revise your monthly premium. This new premium rate will be effective immediately.',NULL),(5,'Revised Premium','After looking into your recent history with us, we have decided to revise your monthly premium. This new premium rate will be effective immediately.',NULL),(6,'Revised Premium','After looking into your recent history with us, we have decided to revise your monthly premium. This new premium rate will be effective immediately.',1);
+/*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -85,12 +114,15 @@ CREATE TABLE `products` (
   `purchase_date` date DEFAULT NULL,
   `product_type_id` int DEFAULT NULL,
   `protection_plan_id` int DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
   PRIMARY KEY (`product_id`),
   KEY `product_type_id_fk_idx` (`product_type_id`),
   KEY `product_protection_plan_id_fk_idx` (`protection_plan_id`),
+  KEY `product_user_id_fk_idx` (`user_id`),
   CONSTRAINT `product_protection_plan_id_fk` FOREIGN KEY (`protection_plan_id`) REFERENCES `protection_plans` (`protection_plan_id`),
-  CONSTRAINT `product_type_id_fk` FOREIGN KEY (`product_type_id`) REFERENCES `product_types` (`product_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `product_type_id_fk` FOREIGN KEY (`product_type_id`) REFERENCES `product_types` (`product_type_id`),
+  CONSTRAINT `product_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,7 +131,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'SN15975348620','2025-04-02',1,NULL),(2,'SN15975348620','2025-04-02',3,NULL),(3,'SN15975348620','2025-04-02',6,NULL),(4,'SN15975348620','2025-04-02',2,NULL),(5,'SN15975348620','2025-03-06',4,NULL),(6,'SN15975348620','2025-03-10',4,NULL),(7,'SN15975348620','2025-03-10',4,NULL),(8,'SN15975348620','2025-03-22',4,NULL),(9,'SN15975348620','2025-04-11',4,8),(10,'SN15975348620','2025-04-13',5,9);
+INSERT INTO `products` VALUES (1,'SN15975348620','2025-04-02',1,NULL,NULL),(2,'SN15975348620','2025-04-02',3,NULL,NULL),(3,'SN15975348620','2025-04-02',6,NULL,NULL),(4,'SN15975348620','2025-04-02',2,NULL,NULL),(5,'SN15975348620','2025-03-06',4,NULL,NULL),(6,'SN15975348620','2025-03-10',4,NULL,NULL),(7,'SN15975348620','2025-03-10',4,NULL,NULL),(8,'SN15975348620','2025-03-22',4,NULL,NULL),(9,'SN15975348620','2025-04-11',4,8,NULL),(10,'SN15975348620','2025-04-13',5,9,NULL),(11,'SN852467913','2025-04-02',2,10,NULL),(12,'SN1379654852','2025-04-13',3,11,NULL),(13,'SN15975348620','2025-04-04',5,12,NULL),(14,'35135435431313','2025-04-08',6,13,NULL),(15,'SN951753456852','2025-04-08',7,14,NULL),(16,'SN0135798462','2025-04-09',8,15,1),(17,'1548486','2025-04-17',7,16,1);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -142,10 +174,13 @@ CREATE TABLE `protection_plans` (
   `expiry_date` date DEFAULT NULL,
   `premium` int NOT NULL,
   `protection_plan_type_id` int DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
   PRIMARY KEY (`protection_plan_id`),
   KEY `protection_plan_types_id_fk_idx` (`protection_plan_type_id`),
-  CONSTRAINT `protection_plan_types_id_fk` FOREIGN KEY (`protection_plan_type_id`) REFERENCES `protection_plan_types` (`protection_plan_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `protection_plan_user_id_fk_idx` (`user_id`),
+  CONSTRAINT `protection_plan_types_id_fk` FOREIGN KEY (`protection_plan_type_id`) REFERENCES `protection_plan_types` (`protection_plan_type_id`),
+  CONSTRAINT `protection_plan_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -154,7 +189,7 @@ CREATE TABLE `protection_plans` (
 
 LOCK TABLES `protection_plans` WRITE;
 /*!40000 ALTER TABLE `protection_plans` DISABLE KEYS */;
-INSERT INTO `protection_plans` VALUES (1,'2025-04-02','2030-04-02',750,2),(2,'2025-04-02','2030-04-02',750,2),(3,'2025-04-02','2030-04-02',1000,3),(4,'2025-04-02','2030-04-02',5000,9),(5,'2025-04-02','2030-04-02',900,6),(6,'2025-04-02','2030-04-02',900,6),(7,'2025-04-02','2030-04-02',1000,3),(8,'2025-04-02','2030-04-02',750,2),(9,'2025-04-02','2030-04-02',500,4);
+INSERT INTO `protection_plans` VALUES (1,'2025-04-02','2030-04-02',750,2,NULL),(2,'2025-04-02','2030-04-02',750,2,NULL),(3,'2025-04-02','2030-04-02',1000,3,NULL),(4,'2025-04-02','2030-04-02',5000,9,NULL),(5,'2025-04-02','2030-04-02',900,6,NULL),(6,'2025-04-02','2030-04-02',900,6,NULL),(7,'2025-04-02','2030-04-02',1000,3,NULL),(8,'2025-04-02','2030-04-02',750,2,NULL),(9,'2025-04-02','2030-04-02',500,4,NULL),(10,'2025-04-02','2030-04-02',2500,8,NULL),(11,'2025-04-02','2030-04-02',1250,3,NULL),(12,'2025-04-02','2030-04-02',750,2,NULL),(13,'2025-04-09','2030-04-09',5000,9,NULL),(14,'2025-04-09','2030-04-09',1173,2,NULL),(15,'2025-04-09','2030-04-09',1466,2,1),(16,'2025-04-09','2030-04-09',7813,9,1);
 /*!40000 ALTER TABLE `protection_plans` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -184,32 +219,6 @@ DELIMITER ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
--- Table structure for table `user_protection_plans`
---
-
-DROP TABLE IF EXISTS `user_protection_plans`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user_protection_plans` (
-  `user_id` int DEFAULT NULL,
-  `protection_plan_id` int DEFAULT NULL,
-  KEY `user_id_fk_idx` (`user_id`),
-  KEY `protection_plan_id_fk_idx` (`protection_plan_id`),
-  CONSTRAINT `protection_plan_id_fk` FOREIGN KEY (`protection_plan_id`) REFERENCES `protection_plans` (`protection_plan_id`),
-  CONSTRAINT `user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user_protection_plans`
---
-
-LOCK TABLES `user_protection_plans` WRITE;
-/*!40000 ALTER TABLE `user_protection_plans` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_protection_plans` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `users`
 --
 
@@ -226,7 +235,7 @@ CREATE TABLE `users` (
   `admin` tinyint DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -235,6 +244,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'testuser','testuser',NULL,'testuser@test.com',NULL,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -247,4 +257,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-02 17:41:12
+-- Dump completed on 2025-04-09 11:51:32

@@ -7,6 +7,8 @@ import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -65,6 +67,18 @@ public class Claim extends HttpServlet {
 				claims++;
 			}
 			
+			String userSql = ""
+					+ "SELECT * "
+					+ "FROM products "
+					+ "WHERE product_id = ?";
+			PreparedStatement userStmt = connection.prepareStatement(userSql);
+			userStmt.setInt(1, Integer.parseInt(request.getParameter("devicename")));
+			ResultSet userResultSet = userStmt.executeQuery();
+			
+			int userId = -1;
+			if (userResultSet.next()) userId = userResultSet.getInt("user_id");
+			else throw new SQLException("Failed to get user ID");
+			
 			if (claims >= 3) {
 				// Calculate the next available date where a claim can be made
 				LocalDate now = LocalDate.now();
@@ -75,6 +89,16 @@ public class Claim extends HttpServlet {
 				throw new ClaimsExceededException("Number of claims exceeded.");
 			}
 			
+			// Hike premium
+			String premiumSql = ""
+					+ "UPDATE protection_plans "
+					+ "JOIN products USING (protection_plan_id) "
+					+ "SET premium = premium * 1.25 " 
+					+ "WHERE product_id = ?";
+			PreparedStatement premiumStmt = connection.prepareStatement(premiumSql);
+			premiumStmt.setInt(1, Integer.parseInt(request.getParameter("devicename")));
+			premiumStmt.executeUpdate();
+			
 			String claimSql = "INSERT INTO claims (claim_date, status, description, product_id) VALUES (?, ?, ?, ?)";
 			PreparedStatement claimStmt = connection.prepareStatement(claimSql);
 			claimStmt.setDate(1, new Date(System.currentTimeMillis()));
@@ -82,6 +106,15 @@ public class Claim extends HttpServlet {
 			claimStmt.setString(3, request.getParameter("description"));
 			claimStmt.setString(4, request.getParameter("devicename"));
 			claimStmt.executeUpdate();
+			
+			String notifSql = "INSERT INTO notifications (title, message, user_id) VALUES (?, ?, ?)";
+			PreparedStatement notifStmt = connection.prepareStatement(notifSql, Statement.RETURN_GENERATED_KEYS);
+			String title = "Revised Premium";
+			String message = "After looking into your recent history with us, we have decided to revise your monthly premium. This new premium rate will be effective immediately.";
+			notifStmt.setString(1, title);
+			notifStmt.setString(2, message);
+			notifStmt.setInt(3, userId);
+			notifStmt.executeUpdate();
 			
 			response.sendRedirect("claim.jsp");
 		} catch (Exception e) {

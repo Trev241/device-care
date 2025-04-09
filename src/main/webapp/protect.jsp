@@ -35,6 +35,8 @@
 		<form method="post" action="Protect">
 			<div class="space-y-12 border-b border-gray-900/10 pb-12">
 				<div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+					<input type="hidden" name="userid" value="1">
+				
 					<div class="sm:col-span-4">				
 						<label for="devicename">Device name</label>
 						<div class="mt-2 grid grid-cols-1">

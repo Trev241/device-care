@@ -29,8 +29,6 @@
 				WHERE protection_plan_id IS NOT NULL;
 		</sql:query>
 	
-	
-		
 		<c:choose>
 			<c:when test="${not empty param.devicename && not empty param.description}">
 				<form method="post" action="Claim">
