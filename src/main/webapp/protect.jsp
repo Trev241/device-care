@@ -20,7 +20,7 @@
 			driver="com.mysql.cj.jdbc.Driver"
 			url="jdbc:mysql://localhost:3306/device_insurance"
 			user="root"
-			password="root"
+			password="Humber"
 			var="db"
 		/>
 	
@@ -35,6 +35,12 @@
 		<form method="post" action="Protect">
 			<div class="space-y-12 border-b border-gray-900/10 pb-12">
 				<div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+				
+				<div class="sm:col-span-2">				
+						<label for="serialno">User Name</label>
+						<input type="text" id="serialno" name="serialno" class="mt-2 block w-full outline-1 focus:outline-2 outline-gray-300 py-1.5 px-3 rounded-md min-w-0 grow focus-within:outline-indigo-600" />
+					</div>
+				
 					<div class="sm:col-span-4">				
 						<label for="devicename">Device name</label>
 						<div class="mt-2 grid grid-cols-1">
