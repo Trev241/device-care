@@ -1,4 +1,4 @@
-package servlet;
+package util;
 /************************************************************
  * Copyright 2025 Humber
  *
@@ -17,6 +17,7 @@ package servlet;
 
 
 public class User {
+	private int id;
 	private String username;
 	private String email;
 	private String phoneNumber;
@@ -25,6 +26,10 @@ public class User {
 	private String admin;
 	
 	
+	public User() {
+		
+	}
+	
 	public User(String username,  String email,  String phoneNumber,  String address,  String password,  String admin) {
 		this.setUsername(username);
 		this.setEmail(email);
@@ -32,6 +37,14 @@ public class User {
 		this.setAddress(address);
 		this.setPassword(password);
 		this.setAdmin(admin);
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	public String getUsername() {

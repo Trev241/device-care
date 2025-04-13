@@ -21,8 +21,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import servlet.User;
 import util.DatabaseConnection;
+import util.User;
 
 public class UserAuthService {
 	public boolean registerUser(User user) {
@@ -60,4 +60,27 @@ public class UserAuthService {
 			return false;
 		}
 	}
+	
+	
+	public User getUserByEmail(String email) {
+	    String query = "SELECT user_id, username FROM users WHERE email = ?";
+	    try (Connection conn = DatabaseConnection.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(query)) {
+
+	        stmt.setString(1, email);
+	        ResultSet rs = stmt.executeQuery();
+
+	        if (rs.next()) {
+	            User user = new User();
+	            user.setId(rs.getInt("user_id"));
+	            user.setUsername(rs.getString("username"));
+	            return user;
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return null;
+	}
+
 }

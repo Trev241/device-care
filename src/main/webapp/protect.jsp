@@ -4,6 +4,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 
+
+
+<%
+    Integer userid = (Integer) session.getAttribute("userid");
+    if (userid == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,15 +44,15 @@
 		<form method="post" action="Protect">
 			<div class="space-y-12 border-b border-gray-900/10 pb-12">
 				<div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-<<<<<<< HEAD
+
 				
 				<div class="sm:col-span-2">				
 						<label for="serialno">User Name</label>
 						<input type="text" id="serialno" name="serialno" class="mt-2 block w-full outline-1 focus:outline-2 outline-gray-300 py-1.5 px-3 rounded-md min-w-0 grow focus-within:outline-indigo-600" />
 					</div>
-=======
+
 					<input type="hidden" name="userid" value="1">
->>>>>>> 76db7a72ec1546272938797983807a220e1cf7f9
+
 				
 					<div class="sm:col-span-4">				
 						<label for="devicename">Device name</label>
