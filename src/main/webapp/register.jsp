@@ -22,7 +22,7 @@
 		String phone = request.getParameter("phone");
 		String address = request.getParameter("address");
 		String password = request.getParameter("password");
-		User user = new User(username, email,phone,address,password,"0");
+		User user = new User(username, email, phone, address, password, 0);
 		
 		
 		UserAuthService auth = new UserAuthService();

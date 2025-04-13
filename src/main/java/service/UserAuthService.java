@@ -27,7 +27,7 @@ import util.User;
 public class UserAuthService {
 	public boolean registerUser(User user) {
 		String query = "INSERT INTO users (username, password, phone, email, address, admin) VALUES (?, ?, ?, ?, ?, ?)";
-		try(Connection connection = DatabaseConnection.getConnection()){
+		try (Connection connection = DatabaseConnection.getConnection()){
 			PreparedStatement stmt = connection.prepareStatement(query);
 			stmt.setString(1,user.getUsername());
 			stmt.setString(2,user.getPassword());
