@@ -3,6 +3,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%
+
+Integer userid = (Integer) session.getAttribute("userid");
+if (userid == null) {
+    response.sendRedirect("login.jsp");
+    return;
+}
+
+
 ProductTypeDao dao = new ProductTypeDao();
 	List<ProductType> types = dao.getAllProductTypes();  
     request.setAttribute("types", types);
@@ -46,6 +54,7 @@ ProductTypeDao dao = new ProductTypeDao();
                     <th class="p-2">Name</th>
                     <th class="p-2">Model</th>
                     <th class="p-2">Discontinued</th>
+                    <th class="p-2">update</th>
                 </tr>
             </thead>
             <tbody>
@@ -54,6 +63,12 @@ ProductTypeDao dao = new ProductTypeDao();
                         <td class="p-2">${type.name}</td>
                         <td class="p-2">${type.model}</td>
                         <td class="p-2">${type.discontinued == 1 ? "Yes" : "No"}</td>
+                        <td class="p-2">
+    						<form action="updateProductType.jsp" method="get">
+        					<input type="hidden" name="name" value="${type.name}" />
+        					<button type="submit" class="text-blue-500 underline">Update</button>
+    						</form>
+						</td>
                     </tr>
                 </c:forEach>
             </tbody>

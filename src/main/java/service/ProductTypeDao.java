@@ -57,4 +57,39 @@ public class ProductTypeDao {
         }
         return types;
     }
+    
+    public ProductType getProductTypeByName(String name) {
+        String query = "SELECT * FROM product_types WHERE name = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, name);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new ProductType(
+                    rs.getString("name"),
+                    rs.getString("model"),
+                    rs.getInt("discontinued")
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean updateProductTypeByName(String originalName, ProductType type) {
+        String query = "UPDATE product_types SET name = ?, model = ?, discontinued = ? WHERE name = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, type.getName());
+            stmt.setString(2, type.getModel());
+            stmt.setInt(3, type.getDiscontinued());
+            stmt.setString(4, originalName);
+            return stmt.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

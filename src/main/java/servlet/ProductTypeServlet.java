@@ -39,14 +39,24 @@ public class ProductTypeServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		 String action = request.getParameter("action");
-	        if ("add".equals(action)) {
-	            String name = request.getParameter("name");
-	            String model = request.getParameter("model");
-	            int discontinued = Integer.parseInt(request.getParameter("discontinued"));
 
-	            ProductTypeDao dao = new ProductTypeDao();
-	            dao.insertProductType(new ProductType(name, model, discontinued));
-	        }
+		    ProductTypeDao dao = new ProductTypeDao();
+
+		    if ("add".equals(action)) {
+		        String name = request.getParameter("name");
+		        String model = request.getParameter("model");
+		        int discontinued = Integer.parseInt(request.getParameter("discontinued"));
+
+		        dao.insertProductType(new ProductType(name, model, discontinued));
+		    } else if ("update".equals(action)) {
+		        String originalName = request.getParameter("originalName"); 
+		        String name = request.getParameter("name");
+		        String model = request.getParameter("model");
+		        int discontinued = Integer.parseInt(request.getParameter("discontinued"));
+
+		        ProductType updatedType = new ProductType(name, model, discontinued);
+		        dao.updateProductTypeByName(originalName, updatedType);
+		    }
 
 	        response.sendRedirect("manageProducts.jsp");
 	}
