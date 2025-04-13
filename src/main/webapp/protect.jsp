@@ -48,7 +48,8 @@
 				
 				<div class="sm:col-span-2">				
 						<label for="serialno">User Name</label>
-						<input type="text" id="serialno" name="serialno" class="mt-2 block w-full outline-1 focus:outline-2 outline-gray-300 py-1.5 px-3 rounded-md min-w-0 grow focus-within:outline-indigo-600" />
+    					<input type="text" id="username" name="username" value="<%= session.getAttribute("name") %>" readonly
+        					class="mt-2 block w-full outline-1 focus:outline-2 outline-gray-300 py-1.5 px-3 rounded-md min-w-0 grow focus-within:outline-indigo-600" />
 					</div>
 
 					<input type="hidden" name="userid" value="1">

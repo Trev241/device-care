@@ -34,7 +34,7 @@ public class UserAuthService {
 			stmt.setString(3,user.getPhoneNumber());
 			stmt.setString(4,user.getEmail());
 			stmt.setString(5,user.getAddress());
-			stmt.setString(6,user.getAdmin());
+			stmt.setInt(6,user.getAdmin());
 			
 			return stmt.executeUpdate() > 0;
 		} catch (Exception e) {
@@ -60,10 +60,8 @@ public class UserAuthService {
 			return false;
 		}
 	}
-	
-	
 	public User getUserByEmail(String email) {
-	    String query = "SELECT user_id, username FROM users WHERE email = ?";
+	    String query = "SELECT user_id, username, admin FROM users WHERE email = ?";
 	    try (Connection conn = DatabaseConnection.getConnection();
 	         PreparedStatement stmt = conn.prepareStatement(query)) {
 
@@ -74,6 +72,7 @@ public class UserAuthService {
 	            User user = new User();
 	            user.setId(rs.getInt("user_id"));
 	            user.setUsername(rs.getString("username"));
+	            user.setAdmin(rs.getInt("admin")); 
 	            return user;
 	        }
 	    } catch (Exception e) {

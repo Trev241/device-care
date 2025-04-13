@@ -47,7 +47,12 @@
     						if (searchQuery != null && !searchQuery.trim().isEmpty()) {
         						products = productDao.searchProducts(searchQuery);
     						} else {
-        						products = productDao.getAllProducts();
+    							if(userid.equals(2)){
+            						products = productDao.getAllProducts();
+
+    							}else{
+            						products = productDao.getProductsByUserId(userid);
+    							}
     						}
 
     						request.setAttribute("products", products);

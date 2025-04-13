@@ -19,30 +19,36 @@
 
 	
 	<%
-	
-	
-	if(request.getParameter("submit") != null){
-		String email = request.getParameter("email");
-		String password = request.getParameter("password");
-		
-		
-		UserAuthService auth = new UserAuthService();
-		if (auth.loginUser(email, password)) {
-		    User user = auth.getUserByEmail(email);
-		    if (user != null) {
-		    	
-		    	session.setAttribute("userid", user.getId());
-		    	session.setAttribute("name", user.getUsername());
-		        response.sendRedirect("protect.jsp");
-		    } else {
-		        out.println("<p style='color:red;'>User not found.</p>");
-		    }
-		} else {
-		    out.println("<p style='color:red;'>Login failed. Try again.</p>");
-		}
-	}
-	
-	%>
+if(request.getParameter("submit") != null){
+    String email = request.getParameter("email");
+    String password = request.getParameter("password");
+
+    UserAuthService auth = new UserAuthService();
+    if (auth.loginUser(email, password)) {
+        User user = auth.getUserByEmail(email);
+        
+       
+        if (user != null) {
+            int isAdmin = user.getAdmin(); 
+            session.setAttribute("userid", user.getId());
+            session.setAttribute("name", user.getUsername());
+            session.setAttribute("admin", isAdmin);
+
+
+            if (isAdmin == 1) {
+                response.sendRedirect("adminDashboard.jsp");
+            } else {
+                response.sendRedirect("home.jsp");
+            }
+        } else {
+            out.println("<p style='color:red;'>User not found.</p>");
+        }
+    } else {
+        out.println("<p style='color:red;'>Login failed. Try again.</p>");
+    }
+}
+%>
+
 	
 
 

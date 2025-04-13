@@ -23,14 +23,14 @@ public class User {
 	private String phoneNumber;
 	private String address;
 	private String password;
-	private String admin;
+	private int admin;
 	
 	
 	public User() {
 		
 	}
 	
-	public User(String username,  String email,  String phoneNumber,  String address,  String password,  String admin) {
+	public User(String username,  String email,  String phoneNumber,  String address,  String password,  int admin) {
 		this.setUsername(username);
 		this.setEmail(email);
 		this.setPhoneNumber(phoneNumber);
@@ -77,10 +77,10 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getAdmin() {
+	public int getAdmin() {
 		return admin;
 	}
-	public void setAdmin(String admin) {
+	public void setAdmin(int admin) {
 		this.admin = admin;
 	}
 }

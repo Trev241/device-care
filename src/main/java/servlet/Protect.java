@@ -45,7 +45,6 @@ public class Protect extends HttpServlet {
 			LocalDate now = LocalDate.now();
 			LocalDate end = now.plusYears(5);
 			
-			// There is a database trigger configured to inject the default plan's default premium. There is no need to query it here.
 			String plansSql = "INSERT INTO protection_plans (start_date, expiry_date, protection_plan_type_id, user_id) VALUES (?, ?, ?, ?)";
 			PreparedStatement plansStmt = connection.prepareStatement(plansSql, Statement.RETURN_GENERATED_KEYS);
 			plansStmt.setString(1, now.toString());

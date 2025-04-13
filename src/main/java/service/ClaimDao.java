@@ -64,4 +64,38 @@ public class ClaimDao {
             e.printStackTrace();
         }
     }
+    
+    public List<Claim> getClaimsByUserId(int userId) {
+        List<Claim> claims = new ArrayList<>();
+
+        String sql = "SELECT c.claim_id, c.claim_date, c.status, c.description, c.settlement, c.product_id " +
+                     "FROM claims c " +
+                     "JOIN products p ON c.product_id = p.product_id " +
+                     "WHERE p.user_id = ? " +
+                     "ORDER BY c.claim_date DESC";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Claim claim = new Claim();
+                claim.setClaimId(rs.getInt("claim_id"));
+                claim.setClaimDate(rs.getDate("claim_date"));
+                claim.setStatus(rs.getString("status"));
+                claim.setDescription(rs.getString("description"));
+                claim.setSettlement(rs.getInt("settlement"));
+                claim.setProductId(rs.getInt("product_id"));
+                claims.add(claim);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return claims;
+    }
+
 }

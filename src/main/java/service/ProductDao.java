@@ -65,4 +65,35 @@ public class ProductDao {
 
         return productList;
     }
+    
+    
+    
+    public List<Product> getProductsByUserId(int userId) {
+        List<Product> productList = new ArrayList<>();
+        String query = "SELECT p.serial_no, p.purchase_date, pt.name AS product_type_name " +
+                       "FROM products p " +
+                       "JOIN product_types pt ON p.product_type_id = pt.product_type_id " +
+                       "WHERE p.user_id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, userId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Product product = new Product();
+                    product.setSerialNo(rs.getString("serial_no"));
+                    product.setPurchaseDate(rs.getDate("purchase_date"));
+                    product.setProductTypeName(rs.getString("product_type_name"));
+                    productList.add(product);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return productList;
+    }
 }
