@@ -45,12 +45,21 @@ public class Protect extends HttpServlet {
 			LocalDate now = LocalDate.now();
 			LocalDate end = now.plusYears(5);
 			
-			String plansSql = "INSERT INTO protection_plans (start_date, expiry_date, protection_plan_type_id, user_id) VALUES (?, ?, ?, ?)";
+			PreparedStatement premStmt = connection.prepareStatement("SELECT standard_premium FROM protection_plan_types WHERE protection_plan_type_id = ?");
+			premStmt.setInt(1, Integer.parseInt(request.getParameter("plantier")));
+			ResultSet premiums = premStmt.executeQuery();
+			
+			int premium = 0;
+			if (premiums.next()) premium = premiums.getInt(1);
+			else throw new SQLException("Failed to fetch premium");
+			
+			String plansSql = "INSERT INTO protection_plans (start_date, expiry_date, protection_plan_type_id, user_id, premium) VALUES (?, ?, ?, ?, ?)";
 			PreparedStatement plansStmt = connection.prepareStatement(plansSql, Statement.RETURN_GENERATED_KEYS);
 			plansStmt.setString(1, now.toString());
 			plansStmt.setString(2, end.toString());
 			plansStmt.setString(3, request.getParameter("plantier"));
 			plansStmt.setInt(4, Integer.parseInt(request.getParameter("userid")));
+			plansStmt.setInt(5, premium);
 			plansStmt.executeUpdate();
 			
 			ResultSet planIds = plansStmt.getGeneratedKeys();
