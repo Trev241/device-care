@@ -12,7 +12,7 @@
 
 # Package Files #
 *.jar
-*.war
+# *.war
 *.nar
 *.ear
 *.zip
@@ -99,7 +99,7 @@ node_modules/
  
 # Package Files #
 *.jar
-*.war
+# *.war
 *.ear
 *.db
 rebel.xml
