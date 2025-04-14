@@ -21,9 +21,9 @@
 	<div class="max-w-screen-lg mx-auto my-24">
 		<sql:setDataSource
 			driver="com.mysql.cj.jdbc.Driver"
-			url="jdbc:mysql://localhost:3306/device_insurance"
-			user="root"
-			password="root"
+			url="${applicationScope.dbUrl}"
+			user="${applicationScope.dbUser}"
+			password="${applicationScope.dbPass}"
 			var="db"
 		/>
 		
