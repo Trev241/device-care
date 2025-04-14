@@ -116,7 +116,7 @@ public class Claim extends HttpServlet {
 			notifStmt.setInt(3, userId);
 			notifStmt.executeUpdate();
 			
-			response.sendRedirect("claim.jsp");
+			response.sendRedirect("home.jsp");
 		} catch (Exception e) {
 			// Forward error
 			System.err.println(e);

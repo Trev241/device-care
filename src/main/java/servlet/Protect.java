@@ -79,7 +79,7 @@ public class Protect extends HttpServlet {
 			productsStmt.setInt(5, Integer.parseInt(request.getParameter("userid")));
 			productsStmt.executeUpdate();
 			
-			response.sendRedirect("protect.jsp");
+			response.sendRedirect("home.jsp");
 		} catch (ClassNotFoundException | SQLException e) {
 			// Forward the error
 			System.err.println(e);

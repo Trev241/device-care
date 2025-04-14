@@ -34,7 +34,6 @@
 	            session.setAttribute("name", user.getUsername());
 	            session.setAttribute("admin", isAdmin);
 	
-	
 	            if (isAdmin == 1) {
 	                response.sendRedirect("adminDashboard.jsp");
 	            } else {
